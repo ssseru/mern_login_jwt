@@ -64,9 +64,9 @@ export const logoutUser = () => (dispatch) => {
   dispatch(setCurrentUser({}));
 };
 
-export const addExpense = (userData) => (dispatch) => {
+export const addTask = (userData) => (dispatch) => {
   axios
-    .post("/api/users/addexpense", userData)
+    .post("/api/users/addtask", userData)
     .then((res) => {
       // Save to localStorage
       // Set token to localStorage
@@ -85,4 +85,8 @@ export const addExpense = (userData) => (dispatch) => {
         payload: err.response.data,
       })
     );
+};
+
+export const showTasks = (userData) => (dispatch) => {
+  axios.post("/api/users/showtasks", userData).then((res) => {});
 };

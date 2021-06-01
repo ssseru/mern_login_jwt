@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { logoutUser } from "../../actions/authActions";
+import { logoutUser, addTask, showTasks } from "../../actions/authActions";
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: "",
-      Amount: "",
+      task: "",
     };
   }
 
@@ -21,7 +20,14 @@ class Dashboard extends Component {
     this.props.logoutUser();
   };
 
-  onSubmit = (e) => {};
+  onSubmit = (e) => {
+    e.preventDefault();
+    const userData = {
+      id: this.props.auth.user.id,
+      task: this.state.task,
+    };
+    this.props.addTask(userData);
+  };
 
   render() {
     const { user } = this.props.auth;
@@ -31,10 +37,6 @@ class Dashboard extends Component {
           <div className="col s12 center-align">
             <h4>
               <b>Hey there,</b> {user.name.split(" ")[0]}
-              <p className="flow-text grey-text text-darken-1">
-                You are logged into a full-stack{" "}
-                <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
-              </p>
             </h4>
             <button
               style={{
@@ -52,19 +54,13 @@ class Dashboard extends Component {
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
-                  value={this.state.category}
-                  id="category"
+                  value={this.state.task}
+                  id="task"
                   type="text"
                 />
-                <label htmlFor="name">Category</label>
+                <label htmlFor="name">Task</label>
               </div>
               <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.amount}
-                  id="amount"
-                  type="number"
-                />
                 <button
                   style={{
                     borderRadius: "3px",
@@ -74,10 +70,13 @@ class Dashboard extends Component {
                   type="submit"
                   className="btn btn-large waves-effect waves-light hoverable blue accent-3"
                 >
-                  add expense
+                  add task
                 </button>
               </div>
             </form>
+            <div>
+              <h4>Tasks list</h4>
+            </div>
           </div>
         </div>
       </div>
@@ -87,6 +86,8 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
   logoutUser: PropTypes.func.isRequired,
+  addTask: PropTypes.func.isRequired,
+  showTasks: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
 
@@ -94,4 +95,6 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { logoutUser })(Dashboard);
+export default connect(mapStateToProps, { logoutUser, addTask, showTasks })(
+  Dashboard
+);

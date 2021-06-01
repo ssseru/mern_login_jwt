@@ -18,7 +18,7 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  expenses: { type: Array, default: [] },
+  tasks: { type: Array, default: [] },
 });
 
 module.exports = User = mongoose.model("users", UserSchema);

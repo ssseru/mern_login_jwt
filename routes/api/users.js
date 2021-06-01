@@ -104,17 +104,29 @@ router.post("/login", (req, res) => {
   });
 });
 
-// @route POST api/users/addexpense
-// @desc add an expense to user model
-// @access Public
-router.post("/addexpense", (req, res) => {
-  const category = req.body.category;
-  const amount = req.body.amount;
-  const email = req.body.email;
+router.post("/addtask", (req, res) => {
+  const task = req.body.task;
+  const _id = req.body.id;
+  User.findOneAndUpdate(
+    { _id },
+    {
+      $push: {
+        tasks: task,
+      },
+    },
+    {
+      upsert: true,
+    }
+  ).then((user) => {});
+});
 
-  // Find user by email
-  User.findOne({ email }).then((user) => {
-    console.log(user);
+router.post("/showtasks", (req, res) => {
+  const _id = req.body.id;
+
+  User.find({ _id }).then((user) => {
+    res.json({
+      tasks: tasks,
+    });
   });
 });
 
